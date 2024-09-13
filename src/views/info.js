@@ -1,6 +1,6 @@
 import {View} from 'react-native'
 
-const info = () => {
+const Info = () => {
     return(
         <View>
             
@@ -8,4 +8,4 @@ const info = () => {
     ) 
 }
 
-export default info
+export default Info

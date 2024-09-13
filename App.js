@@ -3,9 +3,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Emergencia from './src/views/emergencia'
 import Home from './src/views/home'
-import scan from './src/views/scan'
-import info from './src/views/info'
-import contacto from './src/views/Contactos'
+import Scan from './src/views/scan'
+import Info from './src/views/info'
+import Contacto from './src/views/contactos'
 
 const Stack = createNativeStackNavigator()
 
@@ -23,15 +23,15 @@ function MyStack(){
         />
         <Stack.Screen 
           name='scan'
-          component={scan}
+          component={Scan}
         />
         <Stack.Screen
           name='info'
-          component={info}
+          component={Info}
         />
         <Stack.Screen
           name='contacto'
-          component={contacto}
+          component={Contacto}
         />
       </Stack.Navigator>
     </NavigationContainer>
