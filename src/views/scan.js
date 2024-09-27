@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Button, Modal, StyleSheet } from 'react-native';
-import { Camera } from 'expo-camera';
+import { RNCamera } from 'react-native-camera';
 import QRCode from 'react-native-qrcode-svg';
 
 const Scan = () => {
@@ -33,12 +33,13 @@ const Scan = () => {
         onRequestClose={() => setIsScanning(false)}
       >
         <View style={styles.modalContainer}>
-          <Camera
-            onBarCodeScanned={handleBarCodeScanned}
+          <RNCamera
+            onBarCodeRead={handleBarCodeScanned} // Cambiado a onBarCodeRead
             style={styles.camera}
+            captureAudio={false} // Desactiva la captura de audio
           >
             <Button title="Cerrar" onPress={() => setIsScanning(false)} />
-          </Camera>
+          </RNCamera>
         </View>
       </Modal>
       <Modal
