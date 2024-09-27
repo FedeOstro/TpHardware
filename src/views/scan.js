@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { View, Text, Button, Modal, StyleSheet } from 'react-native';
-import { RNCamera } from 'react-native-camera';
+import { Camera } from 'expo-camera';
+import QRCode from 'react-native-qrcode-svg';
 
 const Scan = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [scannedData, setScannedData] = useState('');
   const [isScanning, setIsScanning] = useState(false);
 
-  const handleBarCodeRead = (e) => {
-    setScannedData(e.data);
+  const teamMembers = "Integrantes: Federico Ostrovsky, Alex Droblas y Santiago Cañete"; 
+
+  const handleBarCodeScanned = ({ data }) => {
+    setScannedData(data);
     setIsScanning(false);
     setModalVisible(true);
   };
@@ -16,9 +19,13 @@ const Scan = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Acerca de</Text>
+      <QRCode
+        value={teamMembers}
+        size={200}
+        style={styles.qrCode}
+      />
+      
       <Button title="Escanear otro QR" onPress={() => setIsScanning(true)} />
-
-      {/* Modal para escanear */}
       <Modal
         transparent={true}
         visible={isScanning}
@@ -26,18 +33,14 @@ const Scan = () => {
         onRequestClose={() => setIsScanning(false)}
       >
         <View style={styles.modalContainer}>
-          <RNCamera
+          <Camera
+            onBarCodeScanned={handleBarCodeScanned}
             style={styles.camera}
-            onBarCodeRead={handleBarCodeRead}
-            captureAudio={false}
           >
-            <Text style={styles.text}>Escanea el código QR</Text>
             <Button title="Cerrar" onPress={() => setIsScanning(false)} />
-          </RNCamera>
+          </Camera>
         </View>
       </Modal>
-
-      {/* Modal para mostrar datos escaneados */}
       <Modal
         transparent={true}
         visible={modalVisible}
@@ -45,7 +48,7 @@ const Scan = () => {
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.modalContainer}>
-          <Text>Datos escaneados: {scannedData}</Text>
+          <Text style={styles.modalText}>Datos escaneados: {scannedData}</Text>
           <Button title="Cerrar" onPress={() => setModalVisible(false)} />
         </View>
       </Modal>
@@ -58,15 +61,22 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#E6F7FF',
   },
   title: {
     fontSize: 20,
     marginBottom: 20,
+    color: '#333',
+  },
+  qrCode: {
+    marginBottom: 20,
   },
   camera: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
+    width: '100%',
+    height: '100%',
   },
   modalContainer: {
     flex: 1,
@@ -74,7 +84,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  text: {
+  modalText: {
     color: '#fff',
     fontSize: 18,
     marginBottom: 20,
